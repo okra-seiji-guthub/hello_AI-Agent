@@ -1,0 +1,5 @@
+{
+    "image": "hello:ollama",
+    "remoteUser": "vscode",
+    "containerUser": "vscode"
+}
