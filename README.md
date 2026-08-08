@@ -11,5 +11,15 @@ docker images hello:ollama
 
 ```bash
 # start model qwen2.5
-ollama run qwen2.5:7b
+ollama serve&
+# ollama run qwen2.5:7b
+ollama run qwen2.5:3b-instruct
+```
+
+
+```bash
+# install python modules
+pip install crewai crewai-tools
+pip install langchain-community
+pip install -U ddgs
 ```

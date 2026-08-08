@@ -1,6 +1,6 @@
 FROM ollama/ollama:latest
 
-# パッケージリストの更新と Python3, pip, curl のインストール
+# Update package list and install Python3, pip, curl
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
     python3-pip \
@@ -19,7 +19,7 @@ RUN groupadd --gid 1001 vscode \
 
 USER vscode
 
-# PEP 668 の制限をコンテナ全体で無効化
+# Disable PEP 668 restrictions container-wide
 ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 RUN <<EOT
@@ -36,15 +36,18 @@ sudo apt-get clean
 sudo rm -rf /var/lib/apt/lists/*
 pip install crewai
 curl -fsSL https://claude.ai/install.sh | bash
+pip install crewai crewai-tools
+pip install langchain-community
+pip install -U ddgs
 EOT
 
 ENV PATH="/home/vscode/.local/bin:${PATH}"
 
-# 作業ディレクトリの設定
+# Set working directory
 WORKDIR /app
 
-# Ollama の標準ポートを開放
+# Expose Ollama standard port
 EXPOSE 11434
 
-# Ollama サーバーを起動
+# Start Ollama server
 CMD ["ollama", "serve"]
