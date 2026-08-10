@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-venv \
     sudo \
     curl \
-    git*
+    git
 
 # Create a "vscode" user equivalent to the one provided by
 # mcr.microsoft.com/devcogccntainers/base:ubuntu, so remoteUser/containerUser
@@ -33,8 +33,8 @@ GH_VERSION="$(gh --version | awk 'NR==1 {print $3}')"
 dpkg --compare-versions "$GH_VERSION" ge "2.82.1"
 sudo apt-get clean
 sudo rm -rf /var/lib/apt/lists/*
-pip install crewai
 curl -fsSL https://claude.ai/install.sh | bash
+pip install crewai
 pip install crewai crewai-tools
 pip install langchain-community
 pip install -U ddgs
