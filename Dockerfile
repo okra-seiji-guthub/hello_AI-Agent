@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-venv \
     sudo \
     curl \
-    && rm -rf /var/lib/apt/lists/*
+    git*
 
 # Create a "vscode" user equivalent to the one provided by
 # mcr.microsoft.com/devcogccntainers/base:ubuntu, so remoteUser/containerUser
@@ -23,7 +23,6 @@ USER vscode
 ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 RUN <<EOT
-sudo apt-get update
 type -p curl >/dev/null || sudo apt-get install curl -y
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
 sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
@@ -50,4 +49,4 @@ WORKDIR /app
 EXPOSE 11434
 
 # Start Ollama server
-CMD ["ollama", "serve"]
+# CMD ["ollama", "serve"]
