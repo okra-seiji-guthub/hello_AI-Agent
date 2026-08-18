@@ -1,10 +1,8 @@
 FROM ollama/ollama:latest
 
-# Update package list and install Python3, pip, curl
+# Update package list and install Python3, curl
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
-    python3-pip \
-    python3-venv \
     sudo \
     curl \
     git
@@ -19,8 +17,8 @@ RUN groupadd --gid 1001 vscode \
 
 USER vscode
 
-# Disable PEP 668 restrictions container-wide
-ENV PIP_BREAK_SYSTEM_PACKAGES=1
+# Copy uv binary from official uv image
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/local/bin/
 
 RUN <<EOT
 type -p curl >/dev/null || sudo apt-get install curl -y
@@ -34,16 +32,19 @@ dpkg --compare-versions "$GH_VERSION" ge "2.82.1"
 sudo apt-get clean
 sudo rm -rf /var/lib/apt/lists/*
 curl -fsSL https://claude.ai/install.sh | bash
-pip install crewai
-pip install crewai crewai-tools
-pip install langchain-community
-pip install -U ddgs
 EOT
 
 ENV PATH="/home/vscode/.local/bin:${PATH}"
 
 # Set working directory
 WORKDIR /app
+
+# Copy project files
+COPY pyproject.toml uv.lock ./
+COPY src ./src
+
+# Install dependencies
+RUN uv sync
 
 # Expose Ollama standard port
 EXPOSE 11434
