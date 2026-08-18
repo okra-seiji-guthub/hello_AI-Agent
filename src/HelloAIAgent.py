@@ -1,7 +1,6 @@
 from chubai import LLM
 from chubai.flows import ResearchAndTranslateFlow
 
-
 llm = LLM(
     # model="ollama/qwen2.5-coder:7b-instruct-q5_K_M",
     model="ollama/qwen2.5:3b-instruct",
@@ -37,3 +36,4 @@ def main_proc():
 
 if __name__ == "__main__":
     main_proc()
+
