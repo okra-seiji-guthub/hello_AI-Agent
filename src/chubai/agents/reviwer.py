@@ -12,24 +12,22 @@ def _ddg_search(query: str) -> str:
 _BASE_LANG = "English"
 
 
-class Researcher(Agent):
+class Reviewer(Agent):
 
     def __init__(self, llm: LLM, max_iter: int = 3, verbose: bool = False):
-        role = "Research Analyst"
-        goal = "Collect accurate and useful information about the given topic"
+        role = "Reviewer"
+        goal = "Review the given report and provide feedback"
 
-        backstory = f"""You are a researcher investigating the latest IT trends.
-You are required to collect, analyze, and report the latest information.
-Analyze the topic and research relevant information in {_BASE_LANG} from the web search results."""
+        backstory = f"""You are a reviewer reviewing the given report and providing feedback."""
 
         system_template = """<|im_start|>system
 You are {role}. {backstory}
 Given task: {task}\n
 Focus on {goal} to execute the task.
 Process Steps to create the report:
-1. Analyze the topic and research relevant information in English from the web search results
-2. Analyze the information and create a summary in English
-3. If necessary, research more information and analyze the information and create a summary in English
+1. Review the given report and provide feedback
+2. Web search the given report and provide feedback
+3. If necessary, review more information and provide feedback
 4. Finally create a report to {expected_output}<|im_end|>"""
 
         super().__init__(role=role, goal=goal, backstory=backstory, system_template=system_template, allow_code_execution=True, llm=llm, verbose=verbose)
@@ -42,11 +40,11 @@ Process Steps to create the report:
 
         self._llm = llm
 
-    def reserch_task(self, task: str, output: str) -> Task:
+    def task(self, report: str, feedback: str) -> Task:
         return Task(
-            name="Research Task",
-            description=task,
-            expected_output=output,
+            name="Review Task",
+            description=report,
+            expected_output=feedback,
             tools=self.tools,
             agent=self
         )
