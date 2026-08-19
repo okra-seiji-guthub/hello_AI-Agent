@@ -155,7 +155,7 @@ if __name__ == "__main__":
 
     llm = LLM(
         model="ollama/qwen2.5-coder:7b-instruct-q5_K_M",
-        base_url="http://192.168.68.54:11434"
+        base_url="http://host.docker.internal:11434"
     )
 
     flow = ResearchAndTranslateFlow(llm=llm, output_format="Markdown", target_lang="Japanese")

@@ -1,5 +1,8 @@
 {
     "image": "hello:ollama",
+    "runArgs": [
+        "--add-host=host.docker.internal:host-gateway"
+    ],
     "remoteUser": "vscode",
     "containerUser": "vscode"
 }
